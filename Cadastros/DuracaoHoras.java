@@ -21,27 +21,45 @@ public class DuracaoHoras{
 		
 		int duracaoHoras = 0;
 		
-		if (horaTermino == horaInicio)
-			duracaoHoras = 0;
-		if (horaTermino > horaInicio) //varias possibilidades... 
-			if (horaTermino == horaInicio + 1) {  
-				if (minutosTermino < minutosInicio)  //nao chegou a uma hora
-					duracaoHoras = 0;
-				else //durou pelo menos uma hora
-					duracaoHoras = 1;
-			} else { //possivelmente ultrapassou duas horas
-				if (horaTermino - horaInicio > 2) //
-					duracaoHoras = horaTermino - horaInicio;
-				else if (horaTermino - horaInicio == 2 &&   //certamente menos de duas horas  
-						 minutosTermino < minutosInicio)    //e mais de uma hora
-					duracaoHoras = 1;
-				else //duracao de duas horas, certamente
-					duracaoHoras = 2;
-					
-			}
-		if (horaTermino < horaInicio) 
-			duracaoHoras = -1; //para casos em que a hora de termino nao foi registrada
+		duracaoHoras = duracaoZero(duracaoHoras);
+		duracaoHoras = duracaoRegistrada(duracaoHoras);
+		duracaoHoras = duracaoNaoRegistrada(duracaoHoras);
 		return duracaoHoras;
 		
+	}
+
+	private int duracaoNaoRegistrada(int duracaoHoras) {
+		if (horaTermino < horaInicio) 
+			duracaoHoras = -1;
+		return duracaoHoras;
+	}
+
+	private int duracaoRegistrada(int duracaoHoras) {
+		if (horaTermino > horaInicio)
+			if (horaTermino == horaInicio + 1) {  
+				if (minutosTermino < minutosInicio)
+					duracaoHoras = 0;
+				else 
+					duracaoHoras = 1;
+			} else {
+				if (duracaoViagemHoras() > 2)
+					duracaoHoras = duracaoViagemHoras();
+				else if (duracaoViagemHoras() == 2 &&
+						 minutosTermino < minutosInicio)
+					duracaoHoras = 1;
+				else 
+					duracaoHoras = 2;
+			}
+		return duracaoHoras;
+	}
+
+	private int duracaoViagemHoras() {
+		return horaTermino - horaInicio;
+	}
+
+	private int duracaoZero(int duracaoHoras) {
+		if (horaTermino == horaInicio)
+			duracaoHoras = 0;
+		return duracaoHoras;
 	}
 }

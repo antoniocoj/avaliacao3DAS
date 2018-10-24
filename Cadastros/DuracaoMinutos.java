@@ -14,12 +14,16 @@ public class DuracaoMinutos {
 		int duracaoMinutos = 0;
 		
 		if (minutosTermino > minutosInicio) 
-			duracaoMinutos  = minutosTermino - minutosInicio;
+			duracaoMinutos  = duracaoViagemMinutos();
 		else {
-			duracaoMinutos = 60 - minutosInicio + minutosTermino;
-			if (duracaoMinutos == 60) //caso especial
+			duracaoMinutos = 60 + duracaoViagemMinutos();
+			if (duracaoMinutos == 60)
 				duracaoMinutos = 0;
 		}
 		return duracaoMinutos;
+	}
+
+	private int duracaoViagemMinutos() {
+		return minutosTermino - minutosInicio;
 	}
 }
